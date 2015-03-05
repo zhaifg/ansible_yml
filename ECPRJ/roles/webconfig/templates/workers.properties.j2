@@ -1,0 +1,26 @@
+worker.list=loadbalancer
+
+# Define template worker
+worker.template.port=8009
+worker.template.type=ajp13
+worker.template.lbfactor=1
+worker.template.ping_mode=A
+worker.template.socket_timeout=300
+worker.template.socket_keepalive=True
+# Not necessary to specify connection_pool_timeout with worker mpm 
+worker.template.connection_pool_timeout=600
+
+# Referencing the template worker properties makes the workers.properties
+# shorter and more concise.
+{% for host in groups['appservers'] %}
+
+worker.n{{loop.index}}.reference=worker.template
+worker.n{{loop.index}}.host= {{ iface }}
+{% endfor %}
+
+worker.loadbalancer.type=lb
+worker.loadbalancer.balance_workers=n1
+#worker.loadbalancer.balance_workers= 
+worker.loadbalancer.sticky_session=0
+
+worker.status.type=loadbalancer

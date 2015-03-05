@@ -1,0 +1,6 @@
+---
+webapp_dir: /home/webapp
+domin_name: www.example.com
+port: 80
+prj_name: longkey
+iface: "{{ ansible_eth0.ipv4.address }}"

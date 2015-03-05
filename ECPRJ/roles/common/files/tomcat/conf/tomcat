@@ -1,0 +1,13 @@
+/var/log/tomcat/*.out /var/log/tomcat/*.log {
+    daily
+    rotate 7
+    missingok
+    dateext
+    compress
+    create mode tomcat nobody
+    notifempty
+    shasharedscripts
+    postrotate
+	/etc/init.d/tomcat restart
+    endscript
+}

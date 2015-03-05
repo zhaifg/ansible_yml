@@ -1,0 +1,25 @@
+---
+  - name: copy httpd.conf to webservers
+    template: src=httpd.conf.j2  dest=/etc/httpd/conf/httpd.conf mode=644
+
+  - name: copy mod_jk
+    copy: src=mod_jk.so dest=/etc/httpd/modules/mod_jk.so mode=755
+
+  - name: mkdir webapp
+    command:  mkdir -p {{ webapp_dir }}
+  
+  - name: chown webapp
+    command: chown -R tomcat.nobody {{ webapp_dir  }}
+  
+  - name: copy conf.d directory
+    copy: src=conf.d  dest=/etc/httpd/  mode=755
+
+  - name: copy woker.
+    template: src=workers.properties.j2 dest=/etc/httpd/conf.d/workers.properties  mode=644
+
+
+  - name: create New vhost
+    tags: cnv
+    template: src=vhost_demo.conf.j2 dest=/etc/httpd/conf.d/{{prj_name}}  mode=644
+    notify:
+    - restart httpd

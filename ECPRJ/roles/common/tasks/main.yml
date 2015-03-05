@@ -1,0 +1,59 @@
+---
+  - name: SetEnforce 0
+    shell: /usr/sbin/setenforce 0 || /bin/true
+   
+  - name: yum libselinux-python
+    yum: name=libselinux-python state=latest
+
+  - name: Set Disabled selinux
+    command: sed -i '/SELINUX/s/enforcing/disabled/' /etc/selinux/config 
+
+  - name: bak repo  
+    shell: mv /etc/yum.repos.d/CentOS-Base.repo  /etc/yum.repos.d/CentOS-Base.repo_bak
+  
+  - name: set aliyun repo 
+    get_url: url=http://mirrors.aliyun.com/repo/Centos-6.repo dest=/etc/yum.repos.d/CentOS-Base.repo  mode=0644
+  
+  - name: set epel repo 
+    get_url: url=http://mirrors.aliyun.com/repo/epel-6.repo dest=/etc/yum.repos.d/epel.repo  mode=0644
+
+  - name: sync time
+    cron: name="sync time" minute=*/5 hour=* day=* month=* weekday=* job="/usr/sbin/ntpdate {{ ntp_server }} > /dev/null 2>&1"
+
+  - name: Set max open files
+    copy: src=limits.conf  dest=/etc/security/limits.conf mode=644
+
+  - name: Set max open filie session
+    copy: src=common-session  dest=/etc/pam.d/common-session  mode=644
+
+
+  - name: yum some basic packages
+    yum: name={{ item }} state=latest
+    with_items: 
+      - '"@Additional Development"'
+      - '"@Base"'
+      - '"@Compatibility libraries"'
+      - '"@Console internet tools"'
+      - '"@Development tools"'
+      - '"@Fonts"'
+      - '"@Hardware monitoring utilities"'
+      - '"@Large Systems Performance"'
+      - '"@Legacy UNIX compatibility"'
+      - '"@Legacy X Window System compatibility"'
+      - '"@MySQL Database client"'
+      - '"@Networking Tools"'
+      - '"@Performance Tools"'
+      - '"@Perl Support"'
+      - '"@Security Tools"'
+      - '"@Chinese Support [zh]"'
+      - '"@Debugging Tools"'
+      - '"@Desktop Debugging and Performance Tools"'
+      - '"@Desktop Platform"'
+      - '"@Desktop Platform Development"'
+      - '"@SNMP Support"'
+      - '"@Scalable Filesystems"'
+      - '"@Server Platform"'
+      - '"@Server Platform Development"'
+      - '"@System Management"'
+      - '"@System administration tools"'
+      - '"@X Window System"'  

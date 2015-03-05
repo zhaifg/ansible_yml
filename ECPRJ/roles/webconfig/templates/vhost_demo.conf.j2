@@ -1,0 +1,13 @@
+NameVirtualHost *:{{ port  }}
+
+<VirtualHost *:{{ port }}>
+        ServerName {{ domin_name }}
+        <Directory "{{ webapp_dir }}/ec/p/~*/pic">
+            ErrorDocument 404 /ecscm/p/fileserver/404.php
+        </Directory>
+        DocumentRoot {{ webapp_dir }}
+        DirectoryIndex index.jsp logon.jsp index.html
+        JkMountFile conf.d/uriworkermap.properties
+        RewriteEngine on
+        RewriteRule ^/$  /ec/p/~{{ prj_name }}/index.php [R=301,L]
+</VirtualHost>

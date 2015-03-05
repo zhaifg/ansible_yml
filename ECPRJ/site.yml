@@ -1,0 +1,29 @@
+---
+  - hosts: all
+    roles: 
+      - common
+
+
+#  - hosts: webservers
+#    user: root
+#    roles: 
+#      - webservers
+
+#  - hosts: appservers
+#    user: root
+
+#    roles: 
+#      - jdkconfig
+#      - appservers
+
+
+#  - hosts: webservers
+#    user: root
+#    roles: 
+#      - webconfig
+#
+#  - hosts: dbservers
+#    user: root
+#    
+#    roles: 
+#      - dbservers  

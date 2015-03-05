@@ -1,0 +1,17 @@
+---
+  - name: COPY jdk to appservers
+    copy: src={{jdk_version}}  dest=/root/{{jdk_version}} mode=755
+
+#  - name: Install jdk
+#    shell: /root/{{ jdk_version }} >> /root/jdkinstall_log
+
+  - name: Config jdk
+    copy: src=jdk16.sh dest=/etc/profile.d/java16.sh mode=755
+
+  - name: source profile
+    shell: source  /etc/profile
+
+  - name: java
+    command: java -version
+
+
