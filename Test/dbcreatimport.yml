@@ -1,0 +1,38 @@
+---
+- hosts: dbservers
+  remote_user: root
+
+  vars:
+    dbname: uisp_lw_zzgl
+
+  tasks:
+    - name: dump {{ dbname }} 
+      mysql_db: login_host=172.16.0.220 login_user=ibiz login_password=ibiz  name={{ dbname }} state=dump target=/tmp/{{ dbname }}.sql.bz2
+      when: ansible_all_ipv4_addresses[0]=="172.16.0.220"
+    
+    - name: fetch file
+      fetch: src=/tmp/{{ dbname }}.sql.bz2 dest=/tmp
+      register: result=ansible_all_ipv4_addresses
+      when: ansible_all_ipv4_addresses[0]=="172.16.0.220"
+      tags:
+        - one
+
+    - name:  "Create a new database with name {{dbname}}"
+      mysql_db: login_host=172.16.0.250 login_user=root login_password=""  name={{ dbname }} state=present 
+      #shell: mysql -e "create database {{ dbname }};"
+      when: ansible_all_ipv4_addresses[0]=="172.16.0.250"
+      
+    - name: Copy database {{ dbname }} dump file to remote host and restore it to database
+      #copy: src={{ item }} dest=/tmp
+      copy: src=/tmp/{{result.stdout}}/tmp/{{dbname}}.sql.bz2 dest=/tmp
+      #with_first_found:
+      #  - "/tmp/*/tmp/{{ dbname }}.sql.bz2"
+      when: ansible_all_ipv4_addresses[0]=="172.16.0.250"
+      tags:
+        -  one
+
+    - name: import data into {{ dbname }}
+      mysql_db:  login_host=172.16.0.250 login_user=root login_password=""  name={{ dbname }} state=import target=/tmp/{{ dbname }}.sql.bz2
+      when: ansible_all_ipv4_addresses[0]=="172.16.0.250"
+      tags:
+        - one
