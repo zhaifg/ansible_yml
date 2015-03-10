@@ -1,0 +1,18 @@
+---
+- hosts: all
+  remote_user: root
+  sudo: yes
+  vars:
+      epic: 
+  tasks:
+    - shell: echo "I've got '{{ epic }} and am not afraid to use it'"
+      when: epic is defined
+
+    - fail: msg = "Bailing out this play requires epic"
+      when: epic is not defined
+
+    - shell: echo "This certainly is epic!"
+      when: epic
+
+    - shell: echo "This certainly isn't epic"
+      when: not epic 

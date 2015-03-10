@@ -1,0 +1,6 @@
+---
+   - name: Install basic tools for mysql server
+     yum: name={{ name }} state=latest
+     with_items:
+         - gcc
+         - 

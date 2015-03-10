@@ -1,0 +1,4 @@
+tasks:
+  - name: "print a"
+    command: free -m
+    when: ansible_os_family=="RedHat"

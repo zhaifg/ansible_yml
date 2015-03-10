@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: root
+
+  tasks:
+    - name: make sure apache is running
+      command: hostname
+      when: ansible_os_family=="RedHat"
