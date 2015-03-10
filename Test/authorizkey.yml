@@ -1,0 +1,11 @@
+---
+- hosts: devops
+  remote_user: devops
+  sudo: yes
+
+  tasks:
+    - name: authorized_key add
+      authorized_key: user=devops
+                      key="{{ lookup('file','/home/zhaifg/.ssh/id_rsa.pub') }}"
+                      state=present 
+                      #manage_dir=yes
