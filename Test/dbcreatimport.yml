@@ -3,7 +3,7 @@
   remote_user: root
 
   vars:
-    dbname: uisp_lw_zzgl
+    dbname: uisp_lw_zwbd
 
   tasks:
     - name: dump {{ dbname }} 
@@ -11,8 +11,8 @@
       when: ansible_all_ipv4_addresses[0]=="172.16.0.220"
     
     - name: fetch file
-      fetch: src=/tmp/{{ dbname }}.sql.bz2 dest=/tmp
-      register: result=ansible_all_ipv4_addresses
+#      fetch: src=/tmp/{{ dbname }}.sql.bz2 dest=/tmp
+      synchronize: mode=pull src=/tmp/{{dbname}}.sql.bz2 dest=/tmp/{{dbname}}.sql.bz2
       when: ansible_all_ipv4_addresses[0]=="172.16.0.220"
       tags:
         - one
@@ -24,7 +24,7 @@
       
     - name: Copy database {{ dbname }} dump file to remote host and restore it to database
       #copy: src={{ item }} dest=/tmp
-      copy: src=/tmp/{{result.stdout}}/tmp/{{dbname}}.sql.bz2 dest=/tmp
+      copy: src=/tmp/{{dbname}}.sql.bz2 dest=/tmp/{{ dbname }}.sql.bz2
       #with_first_found:
       #  - "/tmp/*/tmp/{{ dbname }}.sql.bz2"
       when: ansible_all_ipv4_addresses[0]=="172.16.0.250"
