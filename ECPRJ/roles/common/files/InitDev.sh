@@ -4,7 +4,7 @@ flag=`fdisk -l | sed -n '/dev\/xvdb1/p'`
 flag2=`fdisk -l | sed -n '/dev\/xvdb/p'`
 
 if [[ $flag -eq "" ]];then
-if [[ $flag2 -eq "" ]];then
+if [[ $flag2 -ne "" ]];then
    fdisk /dev/xvdb << EOF
 n
 p
