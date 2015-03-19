@@ -1,8 +1,10 @@
 #!/bin/bash
 
-flag=`fdisk -l | sed -n `/dev\/xvdb1/p'`
+flag=`fdisk -l | sed -n '/dev\/xvdb1/p'`
+flag2=`fdisk -l | sed -n '/dev\/xvdb/p'`
 
 if [[ $flag -eq "" ]];then
+if [[ $flag2 -eq "" ]];then
    fdisk /dev/xvdb << EOF
 n
 p
@@ -27,5 +29,6 @@ mkdir /root/backup -p
 cp /etc/fstab /root/backup/
 
 echo "/dev/vgdata/lvdata   /home    ext4    defaults     1  2" >> /etc/fstab
-
+fi
+exit 0
 fi

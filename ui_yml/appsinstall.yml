@@ -1,0 +1,28 @@
+- name: creat tomcat user
+  user: name=tomcat shell=/bin/bash group=nobody uid=46
+
+- name: copy tomcat
+  copy: src={{ tomcat_version }}  dest=/opt/ owner=tomcat group=nobody mode=755
+
+- name: copy server.xml
+  template: src=server.xml dest=/opt/tomcat/conf/server.xml owner=tomcat group=nobody
+
+- name: set init for tomcat
+  file: src=/opt/tomcat/bin/tomcat dest=/etc/init.d/tomcat state=link
+
+- name: Set Tomcat Log 
+  shell: mkdir -p /var/log/tomcat 
+
+- name: Set Tomcat Log owner
+  file: path=/var/log/tomcat owner=tomcat group=nobody mode=755
+
+- name: Link Tomcat Log
+  file: src=/var/log/tomcat dest=/opt/tomcat/logs state=link
+
+- name: copy tomcat-env
+  template: src=tomcat-env.sh dest=/opt/tomcat/conf/tomcat-env.sh owner=tomcat group=nobody mode=755
+  notify:
+  - restart tomcat
+
+- name: ensure tomcat is running
+  service: name=tomcat state=started
