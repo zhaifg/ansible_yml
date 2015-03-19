@@ -20,6 +20,6 @@
 
   - name: create New vhost
     tags: cnv
-    template: src=vhost_demo.conf.j2 dest=/etc/httpd/conf.d/{{prj_name}}  mode=644
+    template: src=vhost_demo.conf.j2 dest=/etc/httpd/conf.d/{{prj_name}}.conf mode=644
     notify:
     - restart httpd
