@@ -19,9 +19,9 @@
 #  - name: set epel repo 
 #    get_url: url=http://mirrors.aliyun.com/repo/epel-6.repo dest=/etc/yum.repos.d/epel.repo  mode=0644
 
-  - name: mount data dev
-    script: InitDev.sh  
-    ignore_errors: yes
+#  - name: mount data dev
+#    script: InitDev.sh  
+#    ignore_errors: yes
 
   - name: sync time
     cron: name="sync time" minute=*/5 hour=* day=* month=* weekday=* job="/usr/sbin/ntpdate {{ ntp_server }} > /dev/null 2>&1"

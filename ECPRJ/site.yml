@@ -4,26 +4,26 @@
       - common
 
 
-#  - hosts: webservers
-#    user: root
-#    roles: 
-#      - webservers
+  - hosts: webservers
+    user: root
+    roles: 
+      - webservers
 
-#  - hosts: appservers
-#    user: root
+  - hosts: appservers
+    user: root
 
-#    roles: 
-#      - jdkconfig
-#      - appservers
+    roles: 
+      - jdkconfig
+      - appservers
 
 
-#  - hosts: webservers
-#    user: root
-#    roles: 
-#      - webconfig
-#
+  - hosts: webservers
+    user: root
+    roles: 
+      - webconfig
+
 #  - hosts: dbservers
 #    user: root
-#    
+    
 #    roles: 
 #      - dbservers  
